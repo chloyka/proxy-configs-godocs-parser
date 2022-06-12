@@ -30,7 +30,7 @@ func Walk(path string, info fs.DirEntry, err error) error {
 			for _, t := range p.Funcs {
 				proxyObj := ProxyStruct{}
 				backendObj := ProxyBackendStruct{}
-				r := regexp.MustCompile(`(?P<Decorator>@[a-zA-Z]+)(?P<Delim>\s+)(?P<Value>["a-zA-Z/:\-_.]+)`)
+				r := regexp.MustCompile(`(?P<Decorator>@[a-zA-Z]+)(?P<Delim>\s+)(?P<Value>["a-zA-Z/:\-_.\d]+)`)
 				decoratorIndex := r.SubexpIndex("Decorator")
 				valueIndex := r.SubexpIndex("Value")
 				matches := r.FindAllStringSubmatch(t.Doc, -1)
