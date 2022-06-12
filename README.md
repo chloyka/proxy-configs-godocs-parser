@@ -4,10 +4,10 @@
 go install github.com/chloyka/proxy-configs-godocs-parser
 ```
 
-## What it this?
+## What is this?
 
 This is a simple godocs parser that makes it easy to declare and collect instructions for proxy api gateway
-Now supports only https://github.com/chloyka/sample-proxy-gateway format
+Now supports only https://github.com/chloyka/simple-proxy-gateway format
 
 ## Why?
 
