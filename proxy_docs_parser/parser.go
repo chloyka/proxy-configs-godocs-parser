@@ -1,11 +1,10 @@
-package docs_parser
+package proxy_docs_parser
 
 import (
 	"go/doc"
 	"go/parser"
 	"go/token"
 	"io/fs"
-	"main/types"
 	"regexp"
 	"strings"
 )
@@ -13,7 +12,7 @@ import (
 var Host *string
 var Port *int
 var Scheme *string
-var ProxyStructSlice []types.ProxyStruct
+var ProxyStructSlice []ProxyStruct
 
 func Walk(path string, info fs.DirEntry, err error) error {
 	if info.IsDir() && !strings.Contains(path, ".git") {
@@ -29,8 +28,8 @@ func Walk(path string, info fs.DirEntry, err error) error {
 		for _, f := range d {
 			p := doc.New(f, "./", 0)
 			for _, t := range p.Funcs {
-				proxyObj := types.ProxyStruct{}
-				backendObj := types.ProxyBackendStruct{}
+				proxyObj := ProxyStruct{}
+				backendObj := ProxyBackendStruct{}
 				r := regexp.MustCompile(`(?P<Decorator>@[a-zA-Z]+)(?P<Delim>\s+)(?P<Value>["a-zA-Z/:\-_.]+)`)
 				decoratorIndex := r.SubexpIndex("Decorator")
 				valueIndex := r.SubexpIndex("Value")
@@ -49,7 +48,7 @@ func Walk(path string, info fs.DirEntry, err error) error {
 						}
 					}
 				}
-				if backendObj != (types.ProxyBackendStruct{}) && proxyObj != (types.ProxyStruct{}) {
+				if backendObj != (ProxyBackendStruct{}) && proxyObj != (ProxyStruct{}) {
 					backendObj.Host = *Host
 					backendObj.Port = *Port
 					backendObj.Scheme = *Scheme

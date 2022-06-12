@@ -1,4 +1,4 @@
-package types
+package proxy_docs_parser
 
 type ProxyStruct struct {
 	Path    string             `json:"path"`

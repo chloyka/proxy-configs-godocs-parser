@@ -1,4 +1,4 @@
-package docs_parser
+package proxy_docs_parser
 
 import (
 	"path/filepath"

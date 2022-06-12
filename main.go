@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	docs_parser "main/docs-parser"
+	"github.com/chloyka/proxy-configs-godocs-parser/proxy_docs_parser"
+	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -12,23 +14,26 @@ import (
 var OutputFile *string
 
 func main() {
-	docs_parser.Scheme = flag.String("scheme", "http", "service scheme")
-	docs_parser.Host = flag.String("host", "", "service scheme")
+	proxy_docs_parser.Scheme = flag.String("scheme", "http", "service scheme")
+	proxy_docs_parser.Host = flag.String("host", "", "service scheme")
 	OutputFile = flag.String("outputFile", "proxy-config.json", "output file name")
 
-	docs_parser.Port = flag.Int("port", 80, "service port")
+	proxy_docs_parser.Port = flag.Int("port", 80, "service port")
 	flag.Parse()
 
-	if *docs_parser.Host == "" {
+	if *proxy_docs_parser.Host == "" {
 		fmt.Println("host cannot be empty")
 		os.Exit(0)
 	}
 
-	_ = filepath.WalkDir(".", docs_parser.Walk)
+	_ = filepath.WalkDir(".", proxy_docs_parser.Walk)
 
-	if len(docs_parser.ProxyStructSlice) > 0 {
-		proxyJson, _ := json.Marshal(docs_parser.ProxyStructSlice)
-		_ = os.WriteFile(*OutputFile, proxyJson, 655)
+	if len(proxy_docs_parser.ProxyStructSlice) > 0 {
+		proxyJson, _ := json.Marshal(proxy_docs_parser.ProxyStructSlice)
+		err := ioutil.WriteFile(*OutputFile, proxyJson, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
 		os.Exit(0)
 	}
 
